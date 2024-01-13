@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'Mesa',
     'avisos',
     'Empleados',
+    'Proveedores',
     'corsheaders', 
     'rest_framework', 
     'rest_framework_simplejwt.token_blacklist' 
@@ -108,9 +109,9 @@ WSGI_APPLICATION = 'HamburguesaProyecto.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'pruebapedidos',
+        'NAME': 'PedidosDB2',
         'USER': 'postgres',
-        'PASSWORD': '12345',
+        'PASSWORD': '1234',
         'HOST': 'localhost',
         'PORT': '5432',
         'OPTIONS': {

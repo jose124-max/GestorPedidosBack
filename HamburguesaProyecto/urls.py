@@ -17,6 +17,7 @@ urlpatterns = [
     path('empleado/', include('Empleados.urls')),
     path('horarios/', include('horariossemanales.urls')),
     path('Mesas/', include('Mesa.urls')),
+    path('Proveedores/', include('Proveedores.urls')),
     path('token/', 
           jwt_views.TokenObtainPairView.as_view(), 
           name ='token_obtain_pair'),
