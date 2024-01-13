@@ -1,6 +1,7 @@
 from django.db import models
 from Administrador.models import Administrador
 from Proveedores.models import Proveedores
+from Producto.models import *
 
 # Create your models here.
 class Compras(models.Model):
@@ -21,8 +22,9 @@ class DetalleCompra(models.Model):
     id_componente = models.ForeignKey(Componente, models.DO_NOTHING, db_column='id_componente', blank=True, null=True)
     cantidad = models.DecimalField(max_digits=9, decimal_places=2)
     precio = models.DecimalField(max_digits=9, decimal_places=2)
-    id_um = models.ForeignKey(Unidadmedida, models.DO_NOTHING, db_column='id_um')
+    id_um = models.ForeignKey(UnidadMedida, models.DO_NOTHING, db_column='id_um')
 
     class Meta:
         managed = False
         db_table = 'detallecompra'
+        
