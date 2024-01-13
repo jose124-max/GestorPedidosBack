@@ -2,6 +2,7 @@ from django.db import models
 from Administrador.models import Administrador
 from Proveedores.models import Proveedores
 from Producto.models import *
+from models import Procesamiento
 
 # Create your models here.
 class Compras(models.Model):
