@@ -33,6 +33,7 @@ class Producto(models.Model):
     class Meta:
         managed = False
         db_table = 'producto'
+
 class UnidadMedida(models.Model):
     idum = models.AutoField(primary_key=True)
     nombreum = models.CharField(max_length=100, null=False)
@@ -40,3 +41,15 @@ class UnidadMedida(models.Model):
     class Meta:
         managed = False
         db_table = 'unidadmedida'
+
+class Componente(models.Model):
+    id_componente = models.AutoField(primary_key=True, db_column='id_componente')
+    nombre = models.CharField(max_length=255)
+    descripcion = models.TextField()
+    costo = models.DecimalField(max_digits=10, decimal_places=2)
+    tipo = models.CharField(max_length=100)
+    id_um = models.ForeignKey(UnidadMedida, on_delete=models.CASCADE, db_column='id_um')
+
+    class Meta:
+        managed = False
+        db_table = 'componente'
