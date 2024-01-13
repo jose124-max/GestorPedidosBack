@@ -2,15 +2,14 @@ from django.db import models
 from Administrador.models import Administrador
 from Proveedores.models import Proveedores
 from Producto.models import *
-from models import Procesamiento
 
-# Create your models here.
+# Suponiendo que Procesamiento está definido en el mismo archivo models.py
 class Compras(models.Model):
     id_compra = models.AutoField(primary_key=True)
     id_proveedor = models.ForeignKey(Proveedores, models.DO_NOTHING, db_column='id_proveedor')
     id_administrador = models.ForeignKey(Administrador, models.DO_NOTHING, db_column='id_administrador')
     fechaCompra = models.DateTimeField()
-    id_procesamiento = models.ForeignKey(Procesamiento, models.DO_NOTHING, db_column='id_procesamiento')
+    id_procesamiento = models.ForeignKey('Procesamiento', models.DO_NOTHING, db_column='id_procesamiento')
 
     class Meta:
         managed = False
@@ -28,4 +27,3 @@ class DetalleCompra(models.Model):
     class Meta:
         managed = False
         db_table = 'detallecompra'
-        
