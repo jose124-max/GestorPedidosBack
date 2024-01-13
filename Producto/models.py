@@ -33,6 +33,7 @@ class Producto(models.Model):
     class Meta:
         managed = False
         db_table = 'producto'
+
 class UnidadMedida(models.Model):
     idum = models.AutoField(primary_key=True)
     nombreum = models.CharField(max_length=100, null=False)
