@@ -75,29 +75,26 @@ class EditarHorarioSucursal(View):
     def post(self, request, *args, **kwargs):
         try:
             id_horario = kwargs.get('id_horario')
-            horario = Horariossemanales.objects.get(id_horario=id_horario)
-            detalles_actuales = DetalleHorariosSemanales.objects.filter(id_horarios=horario)
+            detalles_actuales = DetalleHorariosSemanales.objects.filter(id_horarios=id_horario)           
             detalles_nuevos = json.loads(request.POST.get('detalle', '[]'))
-            for detalle_actual in detalles_actuales:
-                if not any(det['dia'] == detalle_actual.dia and
-                           det['hora_inicio'] == str(detalle_actual.horainicio) and
-                           det['hora_fin'] == str(detalle_actual.horafin)
-                           for det in detalles_nuevos):
-                    detalle_actual.delete()
-            for det_nuevo in detalles_nuevos:
-                dia_nuevo = det_nuevo['dia']
-                hora_inicio_nuevo = det_nuevo['hora_inicio']
-                hora_fin_nuevo = det_nuevo['hora_fin']
-                if not detalles_actuales.filter(dia=dia_nuevo,
-                                                horainicio=hora_inicio_nuevo,
-                                                horafin=hora_fin_nuevo).exists():
+            id_horarios = Horariossemanales.objects.get(id_horarios=id_horario)
+            i=0
+            for det in detalles_nuevos['Detalles']:
+                if i < len(detalles_actuales):
+                    detalle_actual = detalles_actuales[i]
+                    detalle_actual.dia = det['dia']
+                    detalle_actual.horainicio = det['hora_inicio']
+                    detalle_actual.horafin = det['hora_fin']
+                    detalle_actual.save()
+                    
+                else:
                     DetalleHorariosSemanales.objects.create(
-                        id_horarios=horario,
-                        dia=dia_nuevo,
-                        horainicio=hora_inicio_nuevo,
-                        horafin=hora_fin_nuevo
+                        id_horarios=id_horarios,
+                        dia=det['dia'],
+                        horainicio=det['hora_inicio'],
+                        horafin=det['hora_fin']
                     )
-
+                i=i+1
             return JsonResponse({'mensaje': 'Horario actualizado con éxito'})
         
         except Exception as e:
