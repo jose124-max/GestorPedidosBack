@@ -25,6 +25,7 @@ class CrearHorarioSucursal(View):
                 tipohorario='A',
             )
             sucursal.save()
+            
             for det in detalle['Detalles']:
                 id_horarios = sucursal.id_horarios
                 print(id_horarios)
