@@ -38,3 +38,30 @@ class CrearProveedor(View):
             return JsonResponse({'error': str(ve)}, status=400)
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=500)
+
+@method_decorator(csrf_exempt, name='dispatch')
+class EditarProveedor(View):
+    @transaction.atomic
+    def post(self, request, proveedor_id, *args, **kwargs):
+        try:
+            proveedor = Proveedores.objects.get(id_proveedor=proveedor_id)
+
+            nombre_proveedor = request.POST.get('nombre_proveedor')
+            direccion_proveedor = request.POST.get('direccion_proveedor')
+            telefono_proveedor = request.POST.get('telefono_proveedor')
+            correo_proveedor = request.POST.get('correo_proveedor')
+            estado_proveedor = request.POST.get('estado_proveedor')
+
+            proveedor.nombreproveedor = nombre_proveedor
+            proveedor.direccionproveedor = direccion_proveedor
+            proveedor.telefonoproveedor = telefono_proveedor
+            proveedor.correoproveedor = correo_proveedor
+            proveedor.sestado = estado_proveedor
+
+            proveedor.save()
+
+            return JsonResponse({'mensaje': 'Proveedor editado con éxito'})
+        except Proveedores.DoesNotExist:
+            return JsonResponse({'error': 'Proveedor no encontrado'}, status=404)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
