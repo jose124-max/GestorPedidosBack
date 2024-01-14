@@ -208,6 +208,7 @@ class EditarTipoProducto(View):
             tipo_producto = TiposProductos.objects.get(id_tipoproducto=tipo_producto_id)
             tipo_producto.tpnombre = request.POST.get('tpnombre', tipo_producto.tpnombre)
             tipo_producto.descripcion = request.POST.get('descripcion', tipo_producto.descripcion)
+            tipo_producto.sestado = request.POST.get('sestado', tipo_producto.sestado)
             tipo_producto.save()
 
             return JsonResponse({'mensaje': 'Tipo de producto editado con éxito'})
