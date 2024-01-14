@@ -14,6 +14,7 @@ class Categorias(models.Model):
     id_tipoproducto = models.ForeignKey(TiposProductos, on_delete=models.CASCADE, db_column='id_tipoproducto')
     catnombre = models.CharField(max_length=300, null=False)
     descripcion = models.CharField(max_length=500, null=True)
+    sestado = models.CharField(max_length=1)
     class Meta: 
         managed = False
         db_table = 'categorias'

@@ -97,7 +97,8 @@ class CrearCategoria(View):
                 id_tipoproducto=tipo_producto,
                 catnombre=cat_nombre,
                 descripcion=descripcion,
-                imagencategoria=image_64_encode
+                imagencategoria=image_64_encode,
+                sestado=1
             )
             categoria.save()
 
@@ -170,7 +171,7 @@ class ListaTiposProductos(View):
 class ListaCategorias(View):
     def get(self, request, *args, **kwargs):
         try:
-            categorias = Categorias.objects.all()
+            categorias = Categorias.objects.filter(sestado=1)
             data = []
 
             for categoria in categorias:
@@ -227,9 +228,18 @@ class EditarCategoria(View):
             categoria_id = kwargs.get('categoria_id')  # Asegúrate de tener la URL configurada para recibir el ID de la categoría
             categoria = Categorias.objects.get(id_categoria=categoria_id)
             imagencategoria = request.FILES.get('imagencategoria')
-            categoria.catnombre = request.POST.get('catnombre')
-            categoria.descripcion = request.POST.get('descripcion')
-            categoria.id_tipoproducto = TiposProductos.objects.get(id_tipoproducto=request.POST.get('id_tipoproducto', categoria.id_tipoproducto.id_tipoproducto))
+            nombre= request.POST.get('catnombre')
+            if(nombre):
+                categoria.catnombre =nombre
+            descripcion = request.POST.get('descripcion')
+            if(descripcion):
+                categoria.descripcion=descripcion
+            estado= request.POST.get('sestado')
+            if(estado):
+                categoria.sestado =estado
+            tipo= request.POST.get('id_tipoproducto', categoria.id_tipoproducto.id_tipoproducto)
+            if tipo:
+                categoria.id_tipoproducto=TiposProductos.objects.get(id_tipoproducto=tipo)
             if imagencategoria:
                 try:
                     image_read = imagencategoria.read()
