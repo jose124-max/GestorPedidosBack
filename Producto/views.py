@@ -108,7 +108,7 @@ class CrearCategoria(View):
 class ListaTiposYCategorias(View):
     def get(self, request, *args, **kwargs):
         try:
-            tipos_productos = TiposProductos.objects.all()
+            tipos_productos = TiposProductos.objects.filter(sestado=1)
             data = []
 
             for tipo_producto in tipos_productos:
@@ -135,6 +135,7 @@ class ListaTiposYCategorias(View):
                     'id_tipoproducto': tipo_producto.id_tipoproducto,
                     'tpnombre': tipo_producto.tpnombre,
                     'descripcion': tipo_producto.descripcion,
+                    'sestado':tipo_producto.sestado,
                     'categorias': categorias_data
                 }
 
@@ -151,7 +152,7 @@ class ListaTiposYCategorias(View):
 class ListaTiposProductos(View):
     def get(self, request, *args, **kwargs):
         try:
-            tipos_productos = TiposProductos.objects.all()
+            tipos_productos = TiposProductos.objects.filter(sestado=1)
             data = []
             for tipo_producto in tipos_productos:
                 tipo_producto_data = {
@@ -208,7 +209,7 @@ class EditarTipoProducto(View):
             tipo_producto = TiposProductos.objects.get(id_tipoproducto=tipo_producto_id)
             tipo_producto.tpnombre = request.POST.get('tpnombre', tipo_producto.tpnombre)
             tipo_producto.descripcion = request.POST.get('descripcion', tipo_producto.descripcion)
-            tipo_producto.sestado = request.POST.get('sestado', tipo_producto.sestado)
+            tipo_producto.sestado = request.POST.get('sestado')
             tipo_producto.save()
 
             return JsonResponse({'mensaje': 'Tipo de producto editado con éxito'})
