@@ -34,7 +34,7 @@ class CrearTipoProducto(View):
             tp_nombre = data.get('tp_nombre')
             descripcion = data.get('descripcion')
 
-            tipo_producto = TiposProductos.objects.create(tpnombre=tp_nombre, descripcion=descripcion)
+            tipo_producto = TiposProductos.objects.create(tpnombre=tp_nombre, descripcion=descripcion,sestado=1)
             tipo_producto.save()
 
             return JsonResponse({'mensaje': 'Tipo de producto creado con éxito'})

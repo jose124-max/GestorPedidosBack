@@ -4,6 +4,7 @@ class TiposProductos(models.Model):
     id_tipoproducto = models.AutoField(primary_key=True)
     tpnombre = models.CharField(max_length=300, null=False)
     descripcion = models.CharField(max_length=500, null=True)
+    sestado = models.CharField(max_length=1)
     class Meta: 
         managed = False
         db_table = 'tiposproductos'
