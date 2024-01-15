@@ -1,4 +1,6 @@
 from django.db import models
+from Sucursal.models import Sucursales
+from Sucursal.models import Horariossemanales
 
 class TiposProductos(models.Model):
     id_tipoproducto = models.AutoField(primary_key=True)
@@ -57,3 +59,12 @@ class Componente(models.Model):
     class Meta:
         managed = False
         db_table = 'componente'
+class HorarioProducto(models.Model):
+    id_horarioproducto = models.AutoField(primary_key=True, db_column='id_horarioproducto')
+    id_horarios = models.ForeignKey(Horariossemanales, on_delete=models.CASCADE, db_column='id_horarios')
+    id_sucursal = models.ForeignKey(Sucursales, on_delete=models.CASCADE, db_column='id_sucursal')
+    id_producto = models.ForeignKey(Producto, on_delete=models.CASCADE, db_column='id_producto')
+
+    class Meta:
+        managed = False
+        db_table = 'horarioproducto'
