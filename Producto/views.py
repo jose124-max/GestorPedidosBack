@@ -15,11 +15,10 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django.core.paginator import Paginator,EmptyPage
-
-
-
+from horariossemanales.models import Horariossemanales
 import json
 from django.db.models import Max, F
+from django.core.serializers import serialize
 
 @method_decorator(csrf_exempt, name='dispatch')
 class CrearTipoProducto(View):
@@ -375,7 +374,6 @@ class EditarProducto(View):
         try:
             producto_id = kwargs.get('producto_id')
             producto = Producto.objects.get(id_producto=producto_id)
-
             producto.id_categoria = Categorias.objects.get(id_categoria=request.POST.get('id_categoria', producto.id_categoria.id_categoria))
             producto.id_um = UnidadMedida.objects.get(idum=request.POST.get('id_um', producto.id_um.idum))
             producto.puntosp = request.POST.get('puntosp', producto.puntosp)
@@ -523,22 +521,21 @@ class ListarProductos(View):
 
             # Convertir productos a formato JSON
             lista_productos = []
+            lista_horario = []
             for producto in productos_pagina:
                 imagen_base64 = None
-
                 if producto.imagenp:
                     try:
                         byteImg = base64.b64decode(producto.imagenp)
                         imagen_base64 = base64.b64encode(byteImg).decode('utf-8')
                     except Exception as img_error:
                         print(f"Error al procesar imagen: {str(img_error)}")
-                horarios = HorarioProducto.objects.filter(id_producto=producto.id_producto)
-                lista_horario = []
-                for horarioss in horarios:
-                    datos_horario={
-                        'id_horarioproducto':horarioss.id_horarioproducto,
-                        'id_horarios':horarioss.id_horarios,
-                        'id_sucursal':horarioss.id_sucursal,
+                horariosz = HorarioProducto.objects.filter(id_producto=producto.id_producto)
+                for horarioss in horariosz:
+                    datos_horario = {
+                        'id_horarioproducto': horarioss.id_horarioproducto,
+                        'id_horarios': horarioss.id_horarios.id_horarios,  # Cambiado para obtener el campo deseado
+                        'id_sucursal': horarioss.id_sucursal.id_sucursal,
                     }
                     lista_horario.append(datos_horario)
                 datos_producto = {
@@ -556,6 +553,7 @@ class ListarProductos(View):
                     'horarios': lista_horario,
                     'imagenp': imagen_base64,
                 }
+                lista_horario = []
 
                 lista_productos.append(datos_producto)
 

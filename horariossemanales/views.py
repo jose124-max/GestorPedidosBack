@@ -4,6 +4,8 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 import json
 from Sucursal.models import Sucursales
+from Producto.models import Producto
+from Producto.models import HorarioProducto
 from django.views import View
 from django.db import transaction
 from django.http import JsonResponse
@@ -100,4 +102,48 @@ class EditarHorarioSucursal(View):
         
         except Exception as e:
             print(str(e))
+            return JsonResponse({'error': str(e)}, status=400)
+@method_decorator(csrf_exempt, name='dispatch')
+class CrearHorarioProducto(View):
+    @transaction.atomic
+    def post(self, request, *args, **kwargs):
+        try:
+            # Obtener datos del cuerpo de la solicitud
+            nombreh = request.POST.get('nombreh', '')
+            hordescripcion = request.POST.get('hordescripcion', '')
+            idsucursal = request.POST.get('idsucursal', '')
+            idproducto = request.POST.get('idproducto', '')
+            detalle = json.loads(request.POST.get('detalle', '[]'))
+            sucursal= Sucursales.objects.get(id_sucursal=idsucursal)
+            Productox= Producto.objects.get(id_producto=idproducto)
+            horariosem=Horariossemanales.objects.create(
+                    nombreh=nombreh,
+                    hordescripcion=hordescripcion,
+                    tipohorario='P',
+                )
+            HorarioProductoz=HorarioProducto.objects.create(
+                id_horarios = horariosem,
+                id_sucursal = sucursal,
+                id_producto = Productox
+            )
+
+            HorarioProductoz.save()
+            
+            for det in detalle['Detalles']:
+                id_horarios = HorarioProductoz.id_horarios
+                print(id_horarios)
+                print(f"hla uwu")
+                dia = det['dia']
+                hora_inicio = det['hora_inicio']
+                hora_fin=det['hora_fin']
+                DetalleHorariosSemanales.objects.create(
+                    id_horarios = id_horarios,
+                    dia =dia,
+                    horainicio = hora_inicio,
+                    horafin = hora_fin
+                )
+            return JsonResponse({'mensaje': 'Horario agregado con exito'})
+        
+        except Exception as e:
+            print( str(e))
             return JsonResponse({'error': str(e)}, status=400)
