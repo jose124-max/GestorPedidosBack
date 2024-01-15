@@ -31,6 +31,7 @@ class Producto(models.Model):
     iva = models.CharField(max_length=1, choices=[('0', '0'), ('1', '1')], null=False)
     ice = models.CharField(max_length=1, choices=[('0', '0'), ('1', '1')], null=False)
     irbpnr = models.CharField(max_length=1, choices=[('0', '0'), ('1', '1')], null=False)
+    sestado = models.CharField(max_length=1)
 
     class Meta:
         managed = False

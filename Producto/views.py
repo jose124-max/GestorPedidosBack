@@ -334,7 +334,8 @@ class CrearProducto(View):
                 preciounitario=preciounitario,
                 iva=iva,
                 ice=ice,
-                irbpnr=irbpnr
+                irbpnr=irbpnr,
+                sestado = 1
             )
             producto.save()
 
