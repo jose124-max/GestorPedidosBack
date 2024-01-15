@@ -194,7 +194,7 @@ class ListaCategorias(View):
                     'imagencategoria': imagencategoria_base64,
                     'catnombre': categoria.catnombre,
                     'descripcion': categoria.descripcion,
-                    'id_tipoproducto': tipo_producto_data  # Incluir la representación en diccionario
+                    'id_tipoproducto': tipo_producto_data
                 }
 
                 data.append(categoria_data)
