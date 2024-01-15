@@ -264,7 +264,7 @@ class CrearUnidadMedida(View):
             #    return JsonResponse({'error': 'No tienes permisos para crear una unidad de medida'}, status=403)
             data = json.loads(request.body)
             nombre_um = data.get('nombre_um')
-            unidad_medida = UnidadMedida.objects.create(nombreum=nombre_um)
+            unidad_medida = UnidadMedida.objects.create(nombreum=nombre_um,sestado=1)
             unidad_medida.save()
             return JsonResponse({'mensaje': 'Unidad de medida creada con éxito'})
         except Exception as e:
@@ -275,7 +275,7 @@ class CrearUnidadMedida(View):
 class ListarUnidadesMedida(View):
     def get(self, request, *args, **kwargs):
         try:
-            unidades_medida = UnidadMedida.objects.all()
+            unidades_medida = UnidadMedida.objects.filter(sestado=1)
             data = []
 
             for unidad in unidades_medida:
@@ -354,6 +354,7 @@ class EditarUnidadMedida(View):
             unidad = UnidadMedida.objects.get(idum=unidad_id)
 
             unidad.nombreum = request.POST.get('nombreum', unidad.nombreum)
+            unidad.sestado = request.POST.get('sestado', unidad.sestado)
             unidad.save()
 
             return JsonResponse({'mensaje': 'Unidad de medida editada con éxito'})
