@@ -185,11 +185,16 @@ class ListaCategorias(View):
                     except Exception as img_error:
                         print(f"Error al procesar imagen: {str(img_error)}")
 
+                tipo_producto_data = {
+                    'id_tipoproducto': categoria.id_tipoproducto.id_tipoproducto,
+                }
+
                 categoria_data = {
                     'id_categoria': categoria.id_categoria,
                     'imagencategoria': imagencategoria_base64,
                     'catnombre': categoria.catnombre,
-                    'descripcion': categoria.descripcion
+                    'descripcion': categoria.descripcion,
+                    'id_tipoproducto': tipo_producto_data  # Incluir la representación en diccionario
                 }
 
                 data.append(categoria_data)
