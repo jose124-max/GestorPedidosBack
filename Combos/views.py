@@ -33,10 +33,11 @@ class CrearCategoriaCombo(View):
                     image_encoded = image_64_encode.decode('utf-8')
                 except UnidentifiedImageError as img_error:
                     return JsonResponse({'error': f"Error al procesar imagen: {str(img_error)}"}, status=400)
-            categoria = CategoriasCombos(
+            categoria = CategoriasCombos(   
                 catnombre=cat_nombre,
                 descripcion=descripcion,
-                imagencategoria=image_64_encode
+                imagencategoria=image_64_encode,
+                sestado = 1
             )
             categoria.save()
             return JsonResponse({'mensaje': 'Categoría de combo creada con éxito'})
@@ -107,7 +108,9 @@ class CrearCombo(View):
                 preciounitario=preciounitario,
                 iva='0', 
                 ice='0',
-                irbpnr='0'  
+                irbpnr='0',
+                sestado = 1
+
             )
             combo.save()
 
