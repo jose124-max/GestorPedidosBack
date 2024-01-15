@@ -22,7 +22,7 @@ class CrearCategoriaCombo(View):
             #if cuenta.rol != 'S':
             #    return JsonResponse({'error': 'No tienes permisos para crear una categoría de combo'}, status=403)
         
-            cat_nombre = request.POST.get('cat_nombre')
+            cat_nombre = request.POST.get('catnombre')
             descripcion = request.POST.get('descripcion')
             imagencategoria = request.FILES.get('imagencategoria')
             image_64_encode=None
