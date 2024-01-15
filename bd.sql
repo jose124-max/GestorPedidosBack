@@ -465,3 +465,9 @@ CREATE TABLE DetalleCompra (
     Precio NUMERIC(9,2) NOT NULL,
     id_UM INTEGER REFERENCES UnidadMedida(idUM) NOT NULL
 );
+CREATE TABLE horarioproducto (
+    id_HorarioProducto SERIAL PRIMARY KEY,
+    id_HorarioS INTEGER REFERENCES HorariosSemanales(id_HorarioS) NOT NULL,
+    id_Sucursal INTEGER REFERENCES Sucursales(id_Sucursal) NOT NULL,
+    id_Producto INTEGER REFERENCES Producto(id_Producto) NOT NULL
+);

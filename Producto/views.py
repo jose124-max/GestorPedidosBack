@@ -215,7 +215,8 @@ class EditarTipoProducto(View):
             tipo_producto = TiposProductos.objects.get(id_tipoproducto=tipo_producto_id)
             tipo_producto.tpnombre = request.POST.get('tpnombre', tipo_producto.tpnombre)
             tipo_producto.descripcion = request.POST.get('descripcion', tipo_producto.descripcion)
-            tipo_producto.sestado = request.POST.get('sestado')
+            if(request.POST.get('sestado')):
+                tipo_producto.sestado = request.POST.get('sestado')
             tipo_producto.save()
 
             return JsonResponse({'mensaje': 'Tipo de producto editado con éxito'})
@@ -531,12 +532,19 @@ class ListarProductos(View):
                         imagen_base64 = base64.b64encode(byteImg).decode('utf-8')
                     except Exception as img_error:
                         print(f"Error al procesar imagen: {str(img_error)}")
-
+                horarios = HorarioProducto.objects.filter(id_producto=producto.id_producto)
+                lista_horario = []
+                for horarioss in horarios:
+                    datos_horario={
+                        'id_horarioproducto':horarioss.id_horarioproducto,
+                        'id_horarios':horarioss.id_horarios,
+                        'id_sucursal':horarioss.id_sucursal,
+                    }
+                    lista_horario.append(datos_horario)
                 datos_producto = {
                     'id_producto': producto.id_producto,
                     'id_categoria': producto.id_categoria.id_categoria,
                     'id_um': producto.id_um.idum,
-                    'imagenp': imagen_base64,
                     'puntosp': producto.puntosp,
                     'codprincipal': producto.codprincipal,
                     'nombreproducto': producto.nombreproducto,
@@ -544,7 +552,9 @@ class ListarProductos(View):
                     'preciounitario': str(producto.preciounitario),
                     'iva': producto.iva,
                     'ice': producto.ice,
-                    'irbpnr': producto.irbpnr
+                    'irbpnr': producto.irbpnr,
+                    'horarios': lista_horario,
+                    'imagenp': imagen_base64,
                 }
 
                 lista_productos.append(datos_producto)
