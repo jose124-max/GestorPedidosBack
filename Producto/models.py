@@ -56,6 +56,7 @@ class Componente(models.Model):
     costo = models.DecimalField(max_digits=10, decimal_places=2)
     tipo = models.CharField(max_length=100)
     id_um = models.ForeignKey(UnidadMedida, on_delete=models.CASCADE, db_column='id_um')
+    sestado = models.CharField(max_length=1)
 
     class Meta:
         managed = False

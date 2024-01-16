@@ -415,9 +415,11 @@ class CrearComponente(View):
             costo = data.get('costo')
             tipo = data.get('tipo')
             id_um = data.get('id_um')
+            id_categoria = data.get('id_categoria')
 
             # Verificar que la unidad de medida exista
             unidad_medida = UnidadMedida.objects.get(idum=id_um)
+            categoria = Categorias.objects.get(id_categoria=id_categoria)
 
             # Crear el nuevo componente
             componente = Componente.objects.create(
@@ -425,7 +427,9 @@ class CrearComponente(View):
                 descripcion=descripcion,
                 costo=costo,
                 tipo=tipo,
-                id_um=unidad_medida
+                id_um=unidad_medida,
+                id_categoria=categoria,
+                sestado=1
             )
 
             return JsonResponse({'mensaje': 'Componente creado con éxito', 'id_componente': componente.id_componente})
@@ -445,7 +449,7 @@ class ListarComponentes(View):
                     'id_componente': componente.id_componente,
                     'nombre': componente.nombre,
                     'descripcion': componente.descripcion,
-                    'costo': str(componente.costo),
+                    'costo': '$'+str(componente.costo).replace('€', ''),
                     'tipo': componente.tipo,
                     'id_um': componente.id_um.idum,
                     'nombre_um': componente.id_um.nombreum,
