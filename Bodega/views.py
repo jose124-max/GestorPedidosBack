@@ -12,13 +12,13 @@ import json
 # Create your views here.
 @method_decorator(csrf_exempt, name='dispatch')
 class CrearBodegaView(View):
-    @method_decorator(login_required)  # Aplica el decorador login_required
+    #@method_decorator(login_required)
     @transaction.atomic
     def post(self, request, *args, **kwargs):
         try:
-            cuenta = Cuenta.objects.get(nombreusuario=request.user.username)
-            if cuenta.rol != 'A':
-                return JsonResponse({'error': 'No tienes permisos para crear una bodega'}, status=403)
+            #cuenta = Cuenta.objects.get(nombreusuario=request.user.username)
+            #if cuenta.rol != 'A':
+                #return JsonResponse({'error': 'No tienes permisos para crear una bodega'}, status=403)
 
             data = json.loads(request.body)
             nombrebog = data.get('nombrebog')
@@ -27,7 +27,8 @@ class CrearBodegaView(View):
             bodega_nueva  = Bodegas.objects.create(
                 nombrebog=nombrebog,
                 descripcion=descripcion,
-                id_sucursal =Sucursales.objects.filter(id_sucursal=idsucursal).first()
+                id_sucursal =Sucursales.objects.filter(id_sucursal=idsucursal).first(),
+                sestado=1
             )
 
             return JsonResponse({'mensaje': 'Bodega creada con éxito'})
@@ -43,6 +44,7 @@ class ListarBodegasView(View):
             
             for bodega in bodegas:
                 bodegas_list.append({
+                    'id_bodega': bodega.id_bodega,
                     'nombrebog': bodega.nombrebog,
                     'descripcion': bodega.descripcion,
                     'id_sucursal': bodega.id_sucursal.id_sucursal,
