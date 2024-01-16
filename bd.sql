@@ -98,6 +98,7 @@ CREATE TABLE UnidadMedida (
 CREATE TABLE Componente (
     id_Componente SERIAL PRIMARY KEY,
     Nombre VARCHAR(300) NOT NULL,
+	id_Categoria INTEGER REFERENCES Categorias(id_Categoria)NOT NULL,
     Descripcion VARCHAR(500),
     Costo MONEY,
     Tipo CHAR(1) CHECK (Tipo IN ('N', 'F')) NOT NULL,

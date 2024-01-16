@@ -51,6 +51,7 @@ class UnidadMedida(models.Model):
 class Componente(models.Model):
     id_componente = models.AutoField(primary_key=True, db_column='id_componente')
     nombre = models.CharField(max_length=255)
+    id_categoria = models.ForeignKey('Categorias', on_delete=models.CASCADE, db_column='id_categoria')
     descripcion = models.TextField()
     costo = models.DecimalField(max_digits=10, decimal_places=2)
     tipo = models.CharField(max_length=100)
