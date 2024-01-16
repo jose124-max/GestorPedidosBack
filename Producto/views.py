@@ -444,7 +444,13 @@ class ListarComponentes(View):
 
             # Convertir los componentes a formato JSON
             lista_componentes = []
+            
+
             for componente in componentes:
+                tipo_producto_data = {
+                    'id_categoria': componente.id_categoria.id_categoria,
+                    'catnombre': componente.id_categoria.catnombre,
+                }
                 componente_data = {
                     'id_componente': componente.id_componente,
                     'nombre': componente.nombre,
@@ -452,6 +458,7 @@ class ListarComponentes(View):
                     'costo': '$'+str(componente.costo).replace('€', ''),
                     'tipo': componente.tipo,
                     'id_um': componente.id_um.idum,
+                    'id_categoria': tipo_producto_data,
                     'nombre_um': componente.id_um.nombreum,
                 }
 

@@ -1,4 +1,3 @@
-
 CREATE TABLE Cuenta (
     id_Cuenta SERIAL PRIMARY KEY,
     NombreUsuario VARCHAR(300) NOT null UNIQUE ,
@@ -95,16 +94,7 @@ CREATE TABLE UnidadMedida (
     nombreUM VARCHAR(100) NOT NULL,
 	SEstado CHAR(1) CHECK (SEstado IN ('0', '1')) NOT NULL
 );
-CREATE TABLE Componente (
-    id_Componente SERIAL PRIMARY KEY,
-    Nombre VARCHAR(300) NOT NULL,
-	id_Categoria INTEGER REFERENCES Categorias(id_Categoria)NOT NULL,
-    Descripcion VARCHAR(500),
-    Costo MONEY,
-    Tipo CHAR(1) CHECK (Tipo IN ('N', 'F')) NOT NULL,
-    id_UM INTEGER REFERENCES UnidadMedida(idUM) NOT NULL,
-	SEstado CHAR(1) CHECK (SEstado IN ('0', '1')) NOT NULL
-);
+
 CREATE TABLE EnsambleComponente (
     id_ensambleC SERIAL PRIMARY KEY,
     id_componentePadre INTEGER REFERENCES Componente(id_Componente)NOT NULL,
@@ -471,4 +461,14 @@ CREATE TABLE horarioproducto (
     id_HorarioS INTEGER REFERENCES HorariosSemanales(id_HorarioS) NOT NULL,
     id_Sucursal INTEGER REFERENCES Sucursales(id_Sucursal) NOT NULL,
     id_Producto INTEGER REFERENCES Producto(id_Producto) NOT NULL
+);
+CREATE TABLE Componente (
+    id_Componente SERIAL PRIMARY KEY,
+    Nombre VARCHAR(300) NOT NULL,
+	id_Categoria INTEGER REFERENCES Categorias(id_Categoria)NOT NULL,
+    Descripcion VARCHAR(500),
+    Costo MONEY,
+    Tipo CHAR(1) CHECK (Tipo IN ('N', 'F')) NOT NULL,
+    id_UM INTEGER REFERENCES UnidadMedida(idUM) NOT NULL,
+	SEstado CHAR(1) CHECK (SEstado IN ('0', '1')) NOT NULL
 );
