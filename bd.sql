@@ -95,19 +95,7 @@ CREATE TABLE UnidadMedida (
 	SEstado CHAR(1) CHECK (SEstado IN ('0', '1')) NOT NULL
 );
 
-CREATE TABLE EnsambleComponente (
-    id_ensambleC SERIAL PRIMARY KEY,
-    id_componentePadre INTEGER REFERENCES Componente(id_Componente)NOT NULL,
-    PadreCantidad NUMERIC(9,2) NOT NULL,
-    id_UmPadre INTEGER REFERENCES UnidadMedida(idUM) NOT NULL
-);
-CREATE TABLE DetalleEnsambleComponente (
-    id_DetalleEnsambleC SERIAL PRIMARY KEY,
-    id_ensambleC INTEGER REFERENCES EnsambleComponente(id_ensambleC) NOT NULL,
-    id_componenteHijo INTEGER REFERENCES Componente(id_Componente)NOT NULL,
-    CantidadHijo NUMERIC(9,2) NOT NULL,
-    id_UmHijo INTEGER REFERENCES UnidadMedida(idUM) NOT NULL
-);
+
 CREATE TABLE TiposProductos (
     id_Tipoproducto SERIAL PRIMARY KEY,
     TPNombre VARCHAR(300) NOT NULL,
@@ -121,6 +109,30 @@ CREATE TABLE Categorias (
     CatNombre VARCHAR(300) NOT NULL,
     Descripcion VARCHAR(500),
 	SEstado CHAR(1) CHECK (SEstado IN ('0', '1')) NOT NULL
+);
+CREATE TABLE Componente (
+    id_Componente SERIAL PRIMARY KEY,
+    Nombre VARCHAR(300) NOT NULL,
+	id_Categoria INTEGER REFERENCES Categorias(id_Categoria)NOT NULL,
+    Descripcion VARCHAR(500),
+    Costo MONEY,
+    Tipo CHAR(1) CHECK (Tipo IN ('N', 'F')) NOT NULL,
+    id_UM INTEGER REFERENCES UnidadMedida(idUM) NOT NULL,
+	SEstado CHAR(1) CHECK (SEstado IN ('0', '1')) NOT NULL
+);
+
+CREATE TABLE EnsambleComponente (
+    id_ensambleC SERIAL PRIMARY KEY,
+    id_componentePadre INTEGER REFERENCES Componente(id_Componente)NOT NULL,
+    PadreCantidad NUMERIC(9,2) NOT NULL,
+    id_UmPadre INTEGER REFERENCES UnidadMedida(idUM) NOT NULL
+);
+CREATE TABLE DetalleEnsambleComponente (
+    id_DetalleEnsambleC SERIAL PRIMARY KEY,
+    id_ensambleC INTEGER REFERENCES EnsambleComponente(id_ensambleC) NOT NULL,
+    id_componenteHijo INTEGER REFERENCES Componente(id_Componente)NOT NULL,
+    CantidadHijo NUMERIC(9,2) NOT NULL,
+    id_UmHijo INTEGER REFERENCES UnidadMedida(idUM) NOT NULL
 );
 CREATE TABLE Producto (
     id_Producto SERIAL PRIMARY KEY,
@@ -461,14 +473,4 @@ CREATE TABLE horarioproducto (
     id_HorarioS INTEGER REFERENCES HorariosSemanales(id_HorarioS) NOT NULL,
     id_Sucursal INTEGER REFERENCES Sucursales(id_Sucursal) NOT NULL,
     id_Producto INTEGER REFERENCES Producto(id_Producto) NOT NULL
-);
-CREATE TABLE Componente (
-    id_Componente SERIAL PRIMARY KEY,
-    Nombre VARCHAR(300) NOT NULL,
-	id_Categoria INTEGER REFERENCES Categorias(id_Categoria)NOT NULL,
-    Descripcion VARCHAR(500),
-    Costo MONEY,
-    Tipo CHAR(1) CHECK (Tipo IN ('N', 'F')) NOT NULL,
-    id_UM INTEGER REFERENCES UnidadMedida(idUM) NOT NULL,
-	SEstado CHAR(1) CHECK (SEstado IN ('0', '1')) NOT NULL
 );
