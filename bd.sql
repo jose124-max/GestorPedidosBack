@@ -150,6 +150,22 @@ CREATE TABLE Producto (
 	SEstado CHAR(1) CHECK (SEstado IN ('0', '1')) NOT NULL
 );
 
+CREATE TABLE RecompensasProductos (
+    id_RecompensaProducto SERIAL PRIMARY KEY,
+    id_Producto INTEGER REFERENCES Producto(id_Producto) NOT NULL,
+    PuntosGanados NUMERIC(3) NOT NULL,
+    SEstado CHAR(1) CHECK (SEstado IN ('0', '1')) NOT NULL,
+    CONSTRAINT chk_puntos CHECK (PuntosGanados >= 0)
+);
+
+CREATE TABLE RecompensasCombos (
+    id_RecompensaCombo SERIAL PRIMARY KEY,
+    id_Combo INTEGER REFERENCES Combo(id_Combo) NOT NULL,
+    PuntosGanados NUMERIC(3) NOT NULL,
+    SEstado CHAR(1) CHECK (SEstado IN ('0', '1')) NOT NULL,
+    CONSTRAINT chk_puntos CHECK (PuntosGanados >= 0)
+);
+
 CREATE TABLE EnsambleProducto (
     id_emsambleP SERIAL PRIMARY KEY,
     id_Producto INTEGER REFERENCES Producto(id_Producto) NOT NULL,
