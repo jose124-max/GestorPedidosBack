@@ -110,11 +110,11 @@ WSGI_APPLICATION = 'HamburguesaProyecto.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'railway',
+        'NAME': 'PedidosDB5',
         'USER': 'postgres',
-        'PASSWORD': '5EFgaE-f5FEBffce3bA3F-*3C--cFbbC',
-        'HOST': 'monorail.proxy.rlwy.net',
-        'PORT': '25466',
+        'PASSWORD': '12345',
+        'HOST': 'localhost',
+        'PORT': '5432',
         'OPTIONS': {
             'client_encoding': 'UTF8',
         },
