@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'avisos',
     'Empleados',
     'Proveedores',
+    'Recompensas',
     'corsheaders', 
     'rest_framework', 
     'rest_framework_simplejwt.token_blacklist' 
@@ -111,7 +112,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'PedidosDB2',
         'USER': 'postgres',
-        'PASSWORD': '12345',
+        'PASSWORD': '1234',
         'HOST': 'localhost',
         'PORT': '5432',
         'OPTIONS': {
