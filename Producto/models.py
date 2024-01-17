@@ -61,6 +61,27 @@ class Componente(models.Model):
     class Meta:
         managed = False
         db_table = 'componente'
+
+class EnsambleComponente(models.Model):
+    id_ensamblec = models.AutoField(primary_key=True)
+    id_componentepadre = models.ForeignKey('Componente', on_delete=models.CASCADE, db_column='id_componentepadre')
+    padrecantidad = models.DecimalField(max_digits=9, decimal_places=2)
+    id_umpadre = models.ForeignKey('UnidadMedida', on_delete=models.CASCADE,db_column='id_umpadre')
+
+    class Meta:
+        managed = False
+        db_table = 'ensamblecomponente'
+
+class DetalleEnsambleComponente(models.Model):
+    id_detalleensamblec = models.AutoField(primary_key=True)
+    id_ensamblec = models.ForeignKey('EnsambleComponente', on_delete=models.CASCADE, db_column='id_ensamblec')
+    id_componentehijo = models.ForeignKey('Componente', on_delete=models.CASCADE, db_column='id_componentehijo')
+    cantidadhijo = models.DecimalField(max_digits=9, decimal_places=2)
+    id_umhijo = models.ForeignKey('UnidadMedida', on_delete=models.CASCADE,db_column='id_umhijo')
+
+    class Meta:
+        managed = False
+        db_table = 'detalleensamblecomponente'
 class HorarioProducto(models.Model):
     id_horarioproducto = models.AutoField(primary_key=True, db_column='id_horarioproducto')
     id_horarios = models.ForeignKey(Horariossemanales, on_delete=models.CASCADE, db_column='id_horarios')

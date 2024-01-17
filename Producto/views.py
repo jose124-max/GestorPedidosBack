@@ -19,6 +19,7 @@ from horariossemanales.models import Horariossemanales
 import json
 from django.db.models import Max, F
 from django.core.serializers import serialize
+from decimal import Decimal
 
 @method_decorator(csrf_exempt, name='dispatch')
 class CrearTipoProducto(View):
@@ -407,32 +408,57 @@ class CrearComponente(View):
     @transaction.atomic
     def post(self, request, *args, **kwargs):
         try:
-            data = json.loads(request.body)
-
-            # Obtener los datos del cuerpo de la solicitud
-            nombre = data.get('nombre')
-            descripcion = data.get('descripcion')
-            costo = data.get('costo')
-            tipo = data.get('tipo')
-            id_um = data.get('id_um')
-            id_categoria = data.get('id_categoria')
+            nombre = request.POST.get('nombre')
+            descripcion = request.POST.get('descripcion')
+            costo = request.POST.get('costo')
+            tipo = request.POST.get('tipo')
+            id_um = request.POST.get('id_um')
+            id_categoria = request.POST.get('id_categoria')
+            cantidadpadre = Decimal(request.POST.get('cantidad', 0))
 
             # Verificar que la unidad de medida exista
             unidad_medida = UnidadMedida.objects.get(idum=id_um)
             categoria = Categorias.objects.get(id_categoria=id_categoria)
 
-            # Crear el nuevo componente
-            componente = Componente.objects.create(
-                nombre=nombre,
-                descripcion=descripcion,
-                costo=costo,
-                tipo=tipo,
-                id_um=unidad_medida,
-                id_categoria=categoria,
-                sestado=1
-            )
+            if tipo == 'N':
+                componente = Componente.objects.create(
+                    nombre=nombre,
+                    descripcion=descripcion,
+                    costo=costo,
+                    tipo=tipo,
+                    id_um=unidad_medida,
+                    id_categoria=categoria,
+                    sestado=1
+                )
 
-            return JsonResponse({'mensaje': 'Componente creado con éxito', 'id_componente': componente.id_componente})
+            if tipo == 'F' and cantidadpadre > 0:
+                detalle_comp = json.loads(request.POST.get('detalle_comp', '[]'))
+                componente = Componente.objects.create(
+                    nombre=nombre,
+                    descripcion=descripcion,
+                    costo=costo,
+                    tipo=tipo,
+                    id_um=unidad_medida,
+                    id_categoria=categoria,
+                    sestado=1
+                )
+                ensamblecomponente = EnsambleComponente.objects.create(
+                    id_componentepadre=componente,
+                    padrecantidad=cantidadpadre,
+                    id_umpadre=unidad_medida  # Ajusta esta línea según tu lógica
+                )
+                for detalle_data in detalle_comp:
+                    componente_hijo = Componente.objects.get(id_componente=detalle_data['id'])
+                    um = componente_hijo.id_um
+                    detalleensamblecomponente = DetalleEnsambleComponente.objects.create(
+                        id_ensamblec=ensamblecomponente,
+                        id_componentehijo=componente_hijo,
+                        cantidadhijo=detalle_data['cantidad'],
+                        id_umhijo=um
+                    )
+
+            return JsonResponse({'mensaje': 'Componente creado con éxito'})
+
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=400)
 
